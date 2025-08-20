@@ -1,15 +1,15 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Momo {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String[] list = new String[100];
-        int count = 0;
+        ArrayList<Task> list = new ArrayList<>();
 
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm Momo");
         System.out.println("What can I do for you?");
-
+        System.out.println("____________________________________________________________");
 
         String input;
         while(true) {
@@ -18,17 +18,31 @@ public class Momo {
                 bye();
                 break;
             } else if (input.equalsIgnoreCase("list")) {
-                System.out.println("____________________________________________________________");
-                for (int i = 0; i < count; i++) {
-                    System.out.println((i+1) + ". " + list[i]);
+                for (int i = 0; i < list.size(); i++) {
+                    System.out.println((i + 1) + "." + list.get(i));
                 }
                 System.out.println("____________________________________________________________");
             } else {
-                list[count] = input;
-                count ++;
-                System.out.println("____________________________________________________________");
-                System.out.println("added: " + input);
-                System.out.println("____________________________________________________________");
+                if (input.startsWith("mark")) {
+                    int taskIndex = Integer.parseInt(input.substring(5)) - 1;
+                    list.get(taskIndex).markAsDone();
+                    System.out.println("____________________________________________________________");
+                    System.out.println("Nice! I've marked this task as done:");
+                    System.out.println(list.get(taskIndex).toString());
+                    System.out.println("____________________________________________________________");
+                } else if (input.startsWith("unmark")) {
+                    int taskIndex = Integer.parseInt(input.substring(7)) - 1;
+                    list.get(taskIndex).markAsNotDone();
+                    System.out.println("____________________________________________________________");
+                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.println(list.get(taskIndex).toString());
+                    System.out.println("____________________________________________________________");
+                } else {
+                    list.add(new Task(input));
+                    System.out.println("____________________________________________________________");
+                    System.out.println("added: " + input);
+                    System.out.println("____________________________________________________________");
+                }
             }
         }
         sc.close();
