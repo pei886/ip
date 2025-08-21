@@ -28,6 +28,11 @@ public class Momo {
                     int taskIndex = parseTaskIndex(input.substring(7), list.size());
                     list.get(taskIndex).markAsNotDone();
                     formatOutput("OK, I've marked this task as not done yet: \n" + list.get(taskIndex));
+                } else if (input.startsWith("delete")) {
+                    int taskIndex = parseTaskIndex(input.substring(7), list.size());
+                    Task removed = list.remove(taskIndex);
+                    formatOutput("Ok! I've removed this task:\n  " + removed.toString()
+                            + "\nNow you have " + list.size() + " task(s) in the list.");
                 } else {
                     handleTaskCreation(input, list);
                 }
