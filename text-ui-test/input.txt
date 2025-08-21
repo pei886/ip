@@ -5,4 +5,11 @@ event project meeting /from Mon 2pm /to 4pm
 list
 mark 1
 mark 3
+ddl return book /by Sunday
+deadline return book
+event project meeting /from Mon 2pm
+event project meeting /to 4pm
+what
+delete 1
+delete 100
 bye
