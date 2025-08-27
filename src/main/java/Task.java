@@ -1,3 +1,9 @@
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -25,6 +31,26 @@ public class Task {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    public static LocalDateTime parseDateTimeInput(String input) throws DateTimeParseException {
+        String[] patterns = {
+                "M/d/yyyy H:mm",
+                "M/d/yyyy",
+        };
+
+        for (String pattern : patterns) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                try {
+                    return LocalDateTime.parse(input.trim(), formatter);
+                } catch (DateTimeParseException e) {
+                    LocalDate date = LocalDate.parse(input.trim(), formatter);
+                    return date.atStartOfDay();
+                }
+            } catch (DateTimeParseException ignored) {}
+        }
+        throw new DateTimeParseException("Invalid date format: " + input, input, 0);
     }
 
     @Override
