@@ -45,11 +45,11 @@ public class Momo {
                     Task newTask = handleTaskCreation(input);
                     list.add(newTask);
                     printAddedTask(newTask, list);
-                    saveTasksToFile(list);
                 }
             } catch (MomoException e) {
                 formatOutput(e.getMessage());
             }
+            saveTasksToFile(list);
         }
         sc.close();
     }
