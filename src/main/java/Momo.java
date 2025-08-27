@@ -4,6 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +44,10 @@ public class Momo {
                     Task removed = list.remove(taskIndex);
                     formatOutput("Ok! I've removed this task:\n  " + removed.toString()
                             + "\nNow you have " + list.size() + " task(s) in the list.");
+                } else if (input.startsWith("due")) {
+                    String date = input.substring(4).trim();
+                    System.out.println(date);
+                    printList(checkTasksInDue(list, date));
                 } else {
                     Task newTask = handleTaskCreation(input);
                     list.add(newTask);
@@ -159,12 +165,35 @@ public class Momo {
         if (task instanceof ToDo todo) {
             return String.format("T | %s | %s", status, todo.getDescription());
         } else if (task instanceof Deadline deadline) {
-            return String.format("D | %s | %s | %s", status, deadline.getDescription(), deadline.getDeadline());
+            return String.format("D | %s | %s | %s", status, deadline.getDescription(), deadline.getFormattedDeadline());
         } else if (task instanceof Events event) {
-            return String.format("E | %s | %s | %s-%s", status, event.getDescription(), event.getStart(), event.getEnd());
+            return String.format("E | %s | %s | %s-%s", status, event.getDescription(), event.getFormattedStart(), event.getFormattedEnd());
         } else {
             throw new IllegalArgumentException("Unknown task type: " + task.toString());
         }
+    }
+
+    public static ArrayList<Task> checkTasksInDue(ArrayList<Task> list, String date) throws MomoException {
+        ArrayList<Task> dueTasks = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate dueDate = LocalDate.parse(date, formatter);
+            for (Task task : list) {
+                if (task instanceof Deadline deadline) {
+                    if (deadline.getDeadline().toLocalDate().equals(dueDate)) {
+                        dueTasks.add(deadline);
+                    }
+                } else if (task instanceof Events event) {
+                    if (event.getStart().toLocalDate().equals(dueDate)) {
+                        dueTasks.add(event);
+                    }
+                }
+            }
+        } catch (DateTimeParseException e) {
+            throw new MomoException("Invalid date format for deadline: " + date
+                    + "\n Please use the following format: MM/dd/yyyy");
+        }
+        return dueTasks;
     }
 
 

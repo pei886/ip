@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -12,8 +11,12 @@ public class Deadline extends Task{
         this.description = description;
         this.deadline = parseDateTimeInput(deadline);
     }
-    public String getDeadline() {
+    public String getFormattedDeadline() {
         return deadline.format(formatter);
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
     }
 
     @Override

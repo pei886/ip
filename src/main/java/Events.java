@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -14,12 +13,20 @@ public class Events extends Task{
         this.end = parseDateTimeInput(end);
     }
 
-    public String getStart() {
+    public String getFormattedStart() {
         return start.format(formatter);
     }
 
-    public String getEnd() {
+    public String getFormattedEnd() {
         return end.format(formatter);
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
     }
 
     @Override
