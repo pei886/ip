@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Momo {
     protected static String greet = "Hello! I'm Momo\nWhat can I do for you?";
     protected static String bye = "Bye! See you next time!";
+    private static final String DATA_FILE = "./data/momo.txt";
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -34,7 +35,9 @@ public class Momo {
                     formatOutput("Ok! I've removed this task:\n  " + removed.toString()
                             + "\nNow you have " + list.size() + " task(s) in the list.");
                 } else {
-                    handleTaskCreation(input, list);
+                    Task newTask = handleTaskCreation(input);
+                    list.add(newTask);
+                    printAddedTask(newTask, list);
                 }
             } catch (MomoException e) {
                 formatOutput(e.getMessage());
@@ -44,18 +47,17 @@ public class Momo {
         sc.close();
     }
 
-    private static void handleTaskCreation(String input, ArrayList<Task> list) throws MomoException {
+    private static Task handleTaskCreation(String input) throws MomoException {
+        Task newTask;
         if (input.startsWith("todo ")) {
             String desc = input.substring(5).trim();
             if (desc.isEmpty()) throw new MomoException("The description of a todo cannot be empty!");
-            Task todo = new ToDo(desc);
-            printAddedTask(list, todo);
+            newTask = new ToDo(desc);
 
         } else if (input.startsWith("deadline ")) {
             String[] parts = input.substring(9).split(" /by ");
             if (parts.length < 2) throw new MomoException("Deadline must include a description and /by time!");
-            Task ddl = new Deadline(parts[0], parts[1]);
-            printAddedTask(list, ddl);
+            newTask = new Deadline(parts[0], parts[1]);
 
         } else if (input.startsWith("event ")) {
             String[] parts = input.substring(6).split(" /from ");
@@ -63,12 +65,12 @@ public class Momo {
             String desc = parts[0];
             String[] period = parts[1].split(" /to ");
             if (period.length < 2) throw new MomoException("Event must include both start and end times!");
-            Task event = new Events(desc, period[0], period[1]);
-            printAddedTask(list, event);
+            newTask = new Events(desc, period[0], period[1]);
 
         } else {
             throw new InvalidCommandException();
         }
+        return newTask;
     }
 
     private static int parseTaskIndex(String input, int maxTasks) throws MomoException {
@@ -83,10 +85,8 @@ public class Momo {
         }
     }
 
-    private static void printAddedTask(ArrayList<Task> list, Task task) {
-        list.add(task);
-        String sb = "Got it. I've added this task:\n" +
-                "  " + task.toString() + "\n" +
+    private static void printAddedTask(Task task, ArrayList<Task> list) {
+        String sb = "Ok! I've added this task:\n" + task.toString() + "\n" +
                 "Now you have " + list.size() + " tasks in the list.";
         formatOutput(sb);
     }
