@@ -35,6 +35,7 @@ public class Task {
 
     public static LocalDateTime parseDateTimeInput(String input) throws DateTimeParseException {
         String[] patterns = {
+                "MMM d yyyy, hh:mm",
                 "M/d/yyyy H:mm",
                 "M/d/yyyy",
         };
