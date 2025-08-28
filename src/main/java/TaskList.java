@@ -37,7 +37,7 @@ public class TaskList {
         targetTask.markAsNotDone();
     }
 
-    public int size() {
+    public Integer size() {
         return tasks.size();
     }
 

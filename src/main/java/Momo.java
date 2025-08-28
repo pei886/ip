@@ -34,7 +34,7 @@ public class Momo {
             input = sc.nextLine();
             try {
                 if (input.equalsIgnoreCase("bye")) {
-                    formatOutput(bye);
+                    ui.printByeMessage();
                     break;
                 } else if (input.equalsIgnoreCase("list")) {
                     ui.printList(taskList);

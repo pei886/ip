@@ -22,7 +22,7 @@ public class TextUi {
 
     public void showToUser(String... messages) {
         for (String message : messages) {
-            out.println(message.trim() + "\n");
+            out.println(message.trim());
         }
     }
 
