@@ -15,10 +15,22 @@ public class Momo {
     protected static String greet = "Hello! I'm Momo\nWhat can I do for you?";
     protected static String bye = "Bye! See you next time!";
     private static final String DATA_FILE = "./data/momo.txt";
+    private final TextUi ui;
+    private final TaskList taskList;
+    private final Storage storage;
+
+    public Momo() {
+        this.ui = new TextUi();
+        this.taskList = loadTasksFromFile();
+        this.storage = new Storage(DATA_FILE);
+    }
 
     public static void main(String[] args) {
+        new Momo().run();
+    }
+
+    public void run() {
         Scanner sc = new Scanner(System.in);
-        ArrayList<Task> list = loadTasksFromFile();
 
         formatOutput(greet);
 
@@ -30,33 +42,33 @@ public class Momo {
                     formatOutput(bye);
                     break;
                 } else if (input.equalsIgnoreCase("list")) {
-                    printList(list);
+                    ui.printList(taskList);
                 } else if (input.startsWith("mark")) {
-                    int taskIndex = parseTaskIndex(input.substring(5), list.size());
-                    list.get(taskIndex).markAsDone();
-                    formatOutput("Nice! I've marked this task as done: \n" + list.get(taskIndex));
+                    int taskIndex = parseTaskIndex(input.substring(5), taskList.size());
+                    taskList.markTask(taskIndex);
+                    formatOutput("Nice! I've marked this task as done: \n" + taskList.printTask(taskIndex));
                 } else if (input.startsWith("unmark")) {
-                    int taskIndex = parseTaskIndex(input.substring(7), list.size());
-                    list.get(taskIndex).markAsNotDone();
-                    formatOutput("OK, I've marked this task as not done yet: \n" + list.get(taskIndex));
+                    int taskIndex = parseTaskIndex(input.substring(7), taskList.size());
+                    taskList.unmarkTask(taskIndex);
+                    formatOutput("OK, I've marked this task as not done yet: \n" + taskList.printTask(taskIndex));
                 } else if (input.startsWith("delete")) {
-                    int taskIndex = parseTaskIndex(input.substring(7), list.size());
-                    Task removed = list.remove(taskIndex);
+                    int taskIndex = parseTaskIndex(input.substring(7), taskList.size());
+                    Task removed = taskList.delete(taskIndex);
                     formatOutput("Ok! I've removed this task:\n  " + removed.toString()
-                            + "\nNow you have " + list.size() + " task(s) in the list.");
+                            + "\nNow you have " + taskList.size() + " task(s) in the list.");
                 } else if (input.startsWith("due")) {
                     String date = input.substring(4).trim();
                     System.out.println(date);
-                    printList(checkTasksInDue(list, date));
+                    printList(checkTasksInDue(taskList, date));
                 } else {
                     Task newTask = handleTaskCreation(input);
-                    list.add(newTask);
-                    printAddedTask(newTask, list);
+                    taskList.add(newTask);
+                    printAddedTask(newTask, taskList);
                 }
             } catch (MomoException e) {
                 formatOutput(e.getMessage());
             }
-            saveTasksToFile(list);
+            saveTasksToFile(taskList);
         }
         sc.close();
     }
@@ -94,13 +106,13 @@ public class Momo {
         return newTask;
     }
 
-    private static void saveTasksToFile(ArrayList<Task> list) {
+    private static void saveTasksToFile(TaskList list) {
         try {
             //Create directory if it does not exist
             Files.createDirectories(Paths.get("./data"));
 
             FileWriter writer = new FileWriter(DATA_FILE);
-            for (Task task : list) {
+            for (Task task : list.getTasks()) {
                 writer.write(taskToFileString(task) + "\n");
             }
             writer.close();
@@ -109,23 +121,23 @@ public class Momo {
         }
     }
 
-    private static ArrayList<Task> loadTasksFromFile() {
-        ArrayList<Task> list = new ArrayList<>();
+    private static TaskList loadTasksFromFile() {
+        TaskList tasklist = new TaskList(new ArrayList<Task>());
         try {
             FileReader reader = new FileReader(DATA_FILE);
             BufferedReader br = new BufferedReader(reader);
             String line;
 
             while ((line = br.readLine()) != null) {
-                list.add(fileStringToTask(line));
+                tasklist.add(fileStringToTask(line));
             }
             br.close();
-            return list;
+            return tasklist;
 
         } catch (IOException e) {
             System.err.println("Error loading tasks from file: " + e.getMessage());
         }
-        return list;
+        return tasklist;
     }
 
     private static Task fileStringToTask(String s) {
@@ -173,12 +185,12 @@ public class Momo {
         }
     }
 
-    public static ArrayList<Task> checkTasksInDue(ArrayList<Task> list, String date) throws MomoException {
+    public static ArrayList<Task> checkTasksInDue(TaskList list, String date) throws MomoException {
         ArrayList<Task> dueTasks = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
             LocalDate dueDate = LocalDate.parse(date, formatter);
-            for (Task task : list) {
+            for (Task task : list.getTasks()) {
                 if (task instanceof Deadline deadline) {
                     if (deadline.getDeadline().toLocalDate().equals(dueDate)) {
                         dueTasks.add(deadline);
@@ -209,7 +221,7 @@ public class Momo {
         }
     }
 
-    private static void printAddedTask(Task task, ArrayList<Task> list) {
+    private static void printAddedTask(Task task, TaskList list) {
         String sb = "Ok! I've added this task:\n" + task.toString() + "\n" +
                 "Now you have " + list.size() + " tasks in the list.";
         formatOutput(sb);

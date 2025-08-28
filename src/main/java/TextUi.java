@@ -43,13 +43,13 @@ public class TextUi {
         formatOutput(message);
     }
 
-    public void printList(ArrayList<Task> tasks) {
+    public void printList(TaskList list) {
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             sb.append(i + 1)
                     .append(". ")
-                    .append(tasks.get(i))
+                    .append(list.getTask(i))
                     .append("\n");
         }
         formatOutput(sb.toString().trim());

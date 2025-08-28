@@ -11,12 +11,20 @@ public class TaskList {
         return tasks;
     }
 
+    public Task getTask(int index) {
+        return tasks.get(index);
+    }
+
+    public String printTask(int index) {
+        return tasks.get(index).toString();
+    }
+
     public void add(Task task) {
         tasks.add(task);
     }
 
-    public void delete(int index) {
-        tasks.remove(index - 1);
+    public Task delete(int index) {
+        return tasks.remove(index - 1);
     }
 
     public void markTask(int index) {
@@ -27,6 +35,10 @@ public class TaskList {
     public void unmarkTask(int index) {
         Task targetTask = tasks.get(index - 1);
         targetTask.markAsNotDone();
+    }
+
+    public int size() {
+        return tasks.size();
     }
 
 }
