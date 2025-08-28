@@ -34,6 +34,7 @@ public class Momo {
                 String input = ui.readCommand();
                 Command command = Parser.parseCommand(input);
                 command.execute(storage, ui, taskList);
+                isExit = command.isExit();
             } catch (MomoException e) {
                 ui.showToUser(e.getMessage());
             }

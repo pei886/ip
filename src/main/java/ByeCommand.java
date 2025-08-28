@@ -12,4 +12,9 @@ public class ByeCommand extends Command {
         textUi.printByeMessage();
     }
 
+    @Override
+    public boolean isExit() {
+        return true;
+    }
+
 }
