@@ -21,8 +21,9 @@ public class Momo {
 
     public Momo() {
         this.ui = new TextUi();
-        this.taskList = loadTasksFromFile();
         this.storage = new Storage(DATA_FILE);
+        this.taskList = storage.loadTasksFromFile();
+
     }
 
     public static void main(String[] args) {
@@ -68,7 +69,7 @@ public class Momo {
             } catch (MomoException e) {
                 formatOutput(e.getMessage());
             }
-            saveTasksToFile(taskList);
+            storage.saveTasksToFile(taskList);
         }
         sc.close();
     }
@@ -106,84 +107,6 @@ public class Momo {
         return newTask;
     }
 
-    private static void saveTasksToFile(TaskList list) {
-        try {
-            //Create directory if it does not exist
-            Files.createDirectories(Paths.get("./data"));
-
-            FileWriter writer = new FileWriter(DATA_FILE);
-            for (Task task : list.getTasks()) {
-                writer.write(taskToFileString(task) + "\n");
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.err.println("Error saving tasks to file: " + e.getMessage());
-        }
-    }
-
-    private static TaskList loadTasksFromFile() {
-        TaskList tasklist = new TaskList(new ArrayList<Task>());
-        try {
-            FileReader reader = new FileReader(DATA_FILE);
-            BufferedReader br = new BufferedReader(reader);
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                tasklist.add(fileStringToTask(line));
-            }
-            br.close();
-            return tasklist;
-
-        } catch (IOException e) {
-            System.err.println("Error loading tasks from file: " + e.getMessage());
-        }
-        return tasklist;
-    }
-
-    private static Task fileStringToTask(String s) {
-        try {
-            String[] chunks = Arrays.stream(s.split("\\|"))
-                    .map(String::trim)
-                    .toArray(String[]::new);
-            StringBuilder command = new StringBuilder();
-            switch (chunks[0]) {
-                case "T":
-                    command.append("todo ").append(chunks[2]);
-                    break;
-                case "D":
-                    command.append("deadline ").append(chunks[2]);
-                    command.append(" /by ").append(chunks[3]);
-                    break;
-                case "E":
-                    String[] period = chunks[3].split("-");
-                    command.append("event ").append(chunks[2]);
-                    command.append(" /from ").append(period[0]);
-                    command.append(" /to ").append(period[1]);
-                    break;
-            }
-            Task newTask = handleTaskCreation(command.toString());
-            if (chunks[1].equals("1")) {
-                newTask.markAsDone();
-            }
-            return newTask;
-        } catch (MomoException e) {
-            formatOutput(e.getMessage());
-            return null;
-        }
-    }
-
-    public static String taskToFileString(Task task) {
-        String status = task.isDone() ? "1" : "0";
-        if (task instanceof ToDo todo) {
-            return String.format("T | %s | %s", status, todo.getDescription());
-        } else if (task instanceof Deadline deadline) {
-            return String.format("D | %s | %s | %s", status, deadline.getDescription(), deadline.getFormattedDeadline());
-        } else if (task instanceof Events event) {
-            return String.format("E | %s | %s | %s-%s", status, event.getDescription(), event.getFormattedStart(), event.getFormattedEnd());
-        } else {
-            throw new IllegalArgumentException("Unknown task type: " + task.toString());
-        }
-    }
 
     public static ArrayList<Task> checkTasksInDue(TaskList list, String date) throws MomoException {
         ArrayList<Task> dueTasks = new ArrayList<>();
