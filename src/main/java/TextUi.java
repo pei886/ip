@@ -20,18 +20,18 @@ public class TextUi {
         this.out = out;
     }
 
-    public void showToUser(String[] messages) {
+    public void showToUser(String... messages) {
         for (String message : messages) {
             out.println(message.trim() + "\n");
         }
     }
 
-    private void printGreetingMessage() {
+    public void printGreetingMessage() {
         String[] message = new String[] {DIVIDER, GREET};
         showToUser(message);
     }
 
-    private void printByeMessage() {
+    public void printByeMessage() {
         String[] message = new String[] {DIVIDER, BYE, DIVIDER};
         showToUser(message);
     }

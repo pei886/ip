@@ -61,23 +61,21 @@ public class Storage {
             String[] chunks = Arrays.stream(s.split("\\|"))
                     .map(String::trim)
                     .toArray(String[]::new);
-            StringBuilder command = new StringBuilder();
+            Task newTask = null;
             switch (chunks[0]) {
                 case "T":
-                    command.append("todo ").append(chunks[2]);
+                    newTask = new ToDo(chunks[2]);
                     break;
                 case "D":
-                    command.append("deadline ").append(chunks[2]);
-                    command.append(" /by ").append(chunks[3]);
+                    newTask = new Deadline(chunks[2], chunks[3]); // desc, by
                     break;
                 case "E":
                     String[] period = chunks[3].split("-");
-                    command.append("event ").append(chunks[2]);
-                    command.append(" /from ").append(period[0]);
-                    command.append(" /to ").append(period[1]);
+                    newTask = new Events(chunks[2], period[0], period[1]);
                     break;
+                default:
+                    throw new MomoException("Unknown task type in storage: " + chunks[0]);
             }
-            Task newTask = AddCommand.handleTaskCreation(command.toString());
             if (chunks[1].equals("1")) {
                 newTask.markAsDone();
             }
@@ -87,6 +85,7 @@ public class Storage {
             return null;
         }
     }
+
 
     public String taskToFileString(Task task) {
         String status = task.isDone() ? "1" : "0";

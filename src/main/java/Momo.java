@@ -56,9 +56,8 @@ public class Momo {
                     System.out.println(date);
                     printList(checkTasksInDue(taskList, date));
                 } else {
-                    Task newTask = AddCommand.handleTaskCreation(input);
-                    taskList.add(newTask);
-                    printAddedTask(newTask, taskList);
+                    Command newCommand = Parser.parseCommand(input);
+                    newCommand.execute(storage, ui, taskList);
                 }
             } catch (MomoException e) {
                 formatOutput(e.getMessage());
