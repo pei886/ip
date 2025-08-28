@@ -1,25 +1,19 @@
 import java.time.format.DateTimeParseException;
 
 public class Parser {
-    public static void formatOutput(String output) {
-        System.out.println("____________________________________________________________");
-        String[] lines = output.split("\n");
-        for (String line : lines) {
-            System.out.println(line);
-        }
-        System.out.println("____________________________________________________________");
-    }
 
     public static Command parseCommand(String input) throws MomoException {
-        String[] parts = input.split(" ", 2);
+        String[] parts = input.trim().split(" ", 2);
         String commandWord = parts[0];
-        String rest = parts[1];
+        String rest = (parts.length > 1) ? parts[1].trim() : "";
 
         return switch (commandWord) {
             case "todo" -> parseTodo(rest);
             case "deadline" -> parseDeadline(rest);
             case "event" -> parseEvent(rest);
-//            case "list" -> new ListCommand();
+            case "list" -> new ListCommand();
+            case "delete" -> parseDelete(rest);
+            case "mark" ->
             default -> throw new InvalidCommandException();
         };
     }
@@ -57,6 +51,15 @@ public class Parser {
             throw new MomoException("Event needs <description>, <start>, and <end>.");
         }
         return new AddCommand("event", desc, start, end);
+    }
+
+    private static Command parseDelete(String rest) throws MomoException {
+        try {
+            int taskIndex = Integer.parseInt(rest.trim()) - 1;
+            return new DeleteCommand(taskIndex);
+        } catch (NumberFormatException e) {
+            throw new InvalidTaskException();
+        }
     }
 
 }

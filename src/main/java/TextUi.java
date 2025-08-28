@@ -26,8 +26,12 @@ public class TextUi {
         }
     }
 
+    public String readCommand() {
+        return in.nextLine();
+    }
+
     public void printGreetingMessage() {
-        String[] message = new String[] {DIVIDER, GREET};
+        String[] message = new String[] {DIVIDER, GREET, DIVIDER};
         showToUser(message);
     }
 

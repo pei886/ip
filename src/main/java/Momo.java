@@ -25,42 +25,21 @@ public class Momo {
     }
 
     public void run() {
+        ui.printGreetingMessage();
+        boolean isExit = false;
         Scanner sc = new Scanner(System.in);
 
-        formatOutput(greet);
+//        formatOutput(greet);
 
-        String input;
-        while (true) {
-            input = sc.nextLine();
+//        String input;
+        while (!isExit) {
+//            input = sc.nextLine();
             try {
-                if (input.equalsIgnoreCase("bye")) {
-                    ui.printByeMessage();
-                    break;
-                } else if (input.equalsIgnoreCase("list")) {
-                    ui.printList(taskList);
-                } else if (input.startsWith("mark")) {
-                    int taskIndex = parseTaskIndex(input.substring(5), taskList.size());
-                    taskList.markTask(taskIndex);
-                    formatOutput("Nice! I've marked this task as done: \n" + taskList.printTask(taskIndex));
-                } else if (input.startsWith("unmark")) {
-                    int taskIndex = parseTaskIndex(input.substring(7), taskList.size());
-                    taskList.unmarkTask(taskIndex);
-                    formatOutput("OK, I've marked this task as not done yet: \n" + taskList.printTask(taskIndex));
-                } else if (input.startsWith("delete")) {
-                    int taskIndex = parseTaskIndex(input.substring(7), taskList.size());
-                    Task removed = taskList.delete(taskIndex);
-                    formatOutput("Ok! I've removed this task:\n  " + removed.toString()
-                            + "\nNow you have " + taskList.size() + " task(s) in the list.");
-                } else if (input.startsWith("due")) {
-                    String date = input.substring(4).trim();
-                    System.out.println(date);
-                    printList(checkTasksInDue(taskList, date));
-                } else {
-                    Command newCommand = Parser.parseCommand(input);
-                    newCommand.execute(storage, ui, taskList);
-                }
+                String input = ui.readCommand();
+                Command command = Parser.parseCommand(input);
+                command.execute(storage, ui, taskList);
             } catch (MomoException e) {
-                formatOutput(e.getMessage());
+                ui.showToUser(e.getMessage());
             }
             storage.saveTasksToFile(taskList);
         }
