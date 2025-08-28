@@ -29,11 +29,7 @@ public class Momo {
         boolean isExit = false;
         Scanner sc = new Scanner(System.in);
 
-//        formatOutput(greet);
-
-//        String input;
         while (!isExit) {
-//            input = sc.nextLine();
             try {
                 String input = ui.readCommand();
                 Command command = Parser.parseCommand(input);
@@ -69,41 +65,4 @@ public class Momo {
         return dueTasks;
     }
 
-
-    private static int parseTaskIndex(String input, int maxTasks) throws MomoException {
-        try {
-            int taskIndex = Integer.parseInt(input.trim()) - 1;
-            if (taskIndex < 0 || taskIndex >= maxTasks) {
-                throw new TaskOutOfRangeException(maxTasks);
-            }
-            return taskIndex;
-        } catch (NumberFormatException e) {
-            throw new InvalidTaskException();
-        }
-    }
-
-    private static void printAddedTask(Task task, TaskList list) {
-        String sb = "Ok! I've added this task:\n" + task.toString() + "\n" +
-                "Now you have " + list.size() + " tasks in the list.";
-        formatOutput(sb);
-    }
-
-    private static void printList(ArrayList<Task> tasks) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            sb.append((i + 1)).append(".").append(tasks.get(i).toString());
-            sb.append("\n");
-        }
-        formatOutput(sb.toString());
-    }
-
-    private static void formatOutput(String output) {
-        System.out.println("____________________________________________________________");
-        String[] lines = output.split("\n");
-        for (String line : lines) {
-            System.out.println(line);
-        }
-        System.out.println("____________________________________________________________");
-    }
 }

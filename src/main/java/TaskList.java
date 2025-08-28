@@ -27,14 +27,16 @@ public class TaskList {
         return tasks.remove(index);
     }
 
-    public void markTask(int index) {
+    public Task markTask(int index) {
         Task targetTask = tasks.get(index);
         targetTask.markAsDone();
+        return targetTask;
     }
 
-    public void unmarkTask(int index) {
+    public Task unmarkTask(int index) {
         Task targetTask = tasks.get(index);
         targetTask.markAsNotDone();
+        return targetTask;
     }
 
     public Integer size() {

@@ -8,12 +8,14 @@ public class Parser {
         String rest = (parts.length > 1) ? parts[1].trim() : "";
 
         return switch (commandWord) {
+            case "bye" -> new ByeCommand();
             case "todo" -> parseTodo(rest);
             case "deadline" -> parseDeadline(rest);
             case "event" -> parseEvent(rest);
             case "list" -> new ListCommand();
             case "delete" -> parseDelete(rest);
-            case "mark" ->
+            case "mark" -> parseMark(rest);
+            case "unmark" -> parseUnmark(rest);
             default -> throw new InvalidCommandException();
         };
     }
@@ -54,9 +56,20 @@ public class Parser {
     }
 
     private static Command parseDelete(String rest) throws MomoException {
+        return new DeleteCommand(parseIndex(rest));
+    }
+
+    private static Command parseMark(String rest) throws MomoException {
+        return new MarkCommand(parseIndex(rest));
+    }
+
+    private static Command parseUnmark(String rest) throws MomoException {
+        return new UnmarkCommand(parseIndex(rest));
+    }
+
+    private static Integer parseIndex(String rest) throws MomoException {
         try {
-            int taskIndex = Integer.parseInt(rest.trim()) - 1;
-            return new DeleteCommand(taskIndex);
+            return Integer.parseInt(rest.trim()) - 1;
         } catch (NumberFormatException e) {
             throw new InvalidTaskException();
         }
