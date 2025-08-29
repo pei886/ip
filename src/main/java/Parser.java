@@ -1,4 +1,8 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 public class Parser {
 
@@ -16,6 +20,7 @@ public class Parser {
             case "delete" -> parseDelete(rest);
             case "mark" -> parseMark(rest);
             case "unmark" -> parseUnmark(rest);
+            case "due" -> parseDue(rest);
             default -> throw new InvalidCommandException();
         };
     }
@@ -53,6 +58,19 @@ public class Parser {
             throw new MomoException("Event needs <description>, <start>, and <end>.");
         }
         return new AddCommand("event", desc, start, end);
+    }
+
+    private static Command parseDue(String rest) throws MomoException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate dueDate;
+        String date = rest.trim();
+        try {
+            dueDate = LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            throw new MomoException("Invalid date format for deadline: " + date
+                    + "\n Please use the following format: MM/dd/yyyy");
+        }
+        return new DueCommand(dueDate);
     }
 
     private static Command parseDelete(String rest) throws MomoException {
