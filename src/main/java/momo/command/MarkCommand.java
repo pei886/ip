@@ -1,3 +1,11 @@
+package momo.command;
+
+import momo.Storage;
+import momo.TaskList;
+import momo.TextUi;
+import momo.exceptions.MomoException;
+import momo.task.Task;
+
 public class MarkCommand extends Command {
     private final int indexToMark;
 
@@ -8,7 +16,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException{
+    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         Task marked = taskList.markTask(indexToMark);
         ui.showToUser(RESPONSE[0], marked.toString());
     }

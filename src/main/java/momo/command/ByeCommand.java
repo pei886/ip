@@ -1,4 +1,9 @@
-import java.awt.*;
+package momo.command;
+
+import momo.Storage;
+import momo.TaskList;
+import momo.TextUi;
+import momo.exceptions.MomoException;
 
 public class ByeCommand extends Command {
     protected static String BYE = "Bye! See you next time!";
@@ -8,7 +13,7 @@ public class ByeCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi textUi, TaskList taskList) throws MomoException{
+    public void execute(Storage storage, TextUi textUi, TaskList taskList) throws MomoException {
         textUi.printByeMessage();
     }
 
