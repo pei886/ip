@@ -36,34 +36,10 @@ public class Momo {
                 command.execute(storage, ui, taskList);
                 isExit = command.isExit();
             } catch (MomoException e) {
-                ui.showToUser(e.getMessage());
+                ui.showError(e.getMessage());
             }
             storage.saveTasksToFile(taskList);
         }
         sc.close();
     }
-
-    public static ArrayList<Task> checkTasksInDue(TaskList list, String date) throws MomoException {
-        ArrayList<Task> dueTasks = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        try {
-            LocalDate dueDate = LocalDate.parse(date, formatter);
-            for (Task task : list.getTasks()) {
-                if (task instanceof Deadline deadline) {
-                    if (deadline.getDeadline().toLocalDate().equals(dueDate)) {
-                        dueTasks.add(deadline);
-                    }
-                } else if (task instanceof Events event) {
-                    if (event.getStart().toLocalDate().equals(dueDate)) {
-                        dueTasks.add(event);
-                    }
-                }
-            }
-        } catch (DateTimeParseException e) {
-            throw new MomoException("Invalid date format for deadline: " + date
-                    + "\n Please use the following format: MM/dd/yyyy");
-        }
-        return dueTasks;
-    }
-
 }

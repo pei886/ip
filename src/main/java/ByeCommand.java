@@ -8,7 +8,7 @@ public class ByeCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi textUi, TaskList taskList) {
+    public void execute(Storage storage, TextUi textUi, TaskList taskList) throws MomoException{
         textUi.printByeMessage();
     }
 

@@ -21,9 +21,17 @@ public class TextUi {
     }
 
     public void showToUser(String... messages) {
+        out.println(DIVIDER);
         for (String message : messages) {
             out.println(message.trim());
         }
+        out.println(DIVIDER);
+    }
+
+    public void showError(String message) {
+        out.println(DIVIDER);
+        out.println(message);
+        out.println(DIVIDER);
     }
 
     public String readCommand() {
@@ -31,12 +39,12 @@ public class TextUi {
     }
 
     public void printGreetingMessage() {
-        String[] message = new String[] {DIVIDER, GREET, DIVIDER};
+        String[] message = new String[] {GREET};
         showToUser(message);
     }
 
     public void printByeMessage() {
-        String[] message = new String[] {DIVIDER, BYE, DIVIDER};
+        String[] message = new String[] {BYE};
         showToUser(message);
     }
 
@@ -44,10 +52,10 @@ public class TextUi {
         String message = "Ok! I've added this task:\n"
                 + task
                 + "\nNow you have " + list.size() + " tasks in the list.";
-        formatOutput(message);
+        showToUser(message);
     }
 
-    public void printList(TaskList list) {
+    public void printList(TaskList list) throws MomoException {
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the tasks in your list:\n");
         for (int i = 0; i < list.size(); i++) {
@@ -56,7 +64,7 @@ public class TextUi {
                     .append(list.getTask(i))
                     .append("\n");
         }
-        formatOutput(sb.toString().trim());
+        showToUser(sb.toString().trim());
     }
 
     private void formatOutput(String output) {

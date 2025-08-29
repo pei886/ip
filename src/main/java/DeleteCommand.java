@@ -10,7 +10,7 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) {
+    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException{
         Task removed = taskList.delete(indexToDelete);
         ui.showToUser(RESPONSE[0], removed.toString(), RESPONSE[1], taskList.size().toString(), RESPONSE[2]);
     }

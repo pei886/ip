@@ -12,7 +12,7 @@ public class DueCommand extends Command{
 
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) {
+    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException{
         TaskList dueTasks = new TaskList(new ArrayList<>());
         for (Task task : taskList.getTasks()) {
             if (task instanceof Deadline deadline) {

@@ -8,7 +8,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) {
+    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException{
         Task marked = taskList.markTask(indexToMark);
         ui.showToUser(RESPONSE[0], marked.toString());
     }

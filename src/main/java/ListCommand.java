@@ -2,7 +2,7 @@ public class ListCommand extends Command {
     public ListCommand() {}
 
     @Override
-    public void execute(Storage storage, TextUi textUi, TaskList taskList) {
+    public void execute(Storage storage, TextUi textUi, TaskList taskList) throws MomoException{
         textUi.printList(taskList);
     }
 }

@@ -13,7 +13,7 @@ public class AddCommand extends Command{
 
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) {
+    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException{
         try {
             Task newTask = switch (type) {
                 case "todo" -> new ToDo(args[0]);
