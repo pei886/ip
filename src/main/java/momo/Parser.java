@@ -24,6 +24,7 @@ public class Parser {
             case "mark" -> parseMark(rest);
             case "unmark" -> parseUnmark(rest);
             case "due" -> parseDue(rest);
+            case "find" -> parseFind(rest);
             default -> throw new InvalidCommandException();
         };
     }
@@ -87,6 +88,14 @@ public class Parser {
     private static Command parseUnmark(String rest) throws MomoException {
         return new UnmarkCommand(parseIndex(rest));
     }
+
+    private static Command parseFind(String rest) throws MomoException {
+        if (rest.isBlank()) {
+            throw new MomoException("Please enter a keyword to find");
+        }
+        return new FindCommand(rest.trim());
+    }
+
 
     private static Integer parseIndex(String rest) throws MomoException {
         try {
