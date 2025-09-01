@@ -9,13 +9,20 @@ import momo.task.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class DueCommand extends Command{
+/**
+ * Represents a command that lists tasks due on a specific date.
+ */
+public class DueCommand extends Command {
     private final LocalDate dueDate;
 
+    /**
+     * Constructs a {@code DueCommand} with the given date.
+     *
+     * @param dateTime The due date to check tasks against.
+     */
     public DueCommand(LocalDate dateTime) {
         this.dueDate = dateTime;
     }
-
 
     @Override
     public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {

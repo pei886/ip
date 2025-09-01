@@ -7,15 +7,23 @@ import momo.exceptions.InvalidCommandException;
 import momo.exceptions.MomoException;
 import momo.task.*;
 
-public class AddCommand extends Command{
+/**
+ * Represents a command that adds a new task to the task list.
+ */
+public class AddCommand extends Command {
     private final String type;
     private final String[] args;
 
+    /**
+     * Constructs an {@code AddCommand}.
+     *
+     * @param type The type of task to add (todo, deadline, event).
+     * @param args Arguments required to construct the task.
+     */
     public AddCommand(String type, String... args) {
         this.type = type;
         this.args = args;
     }
-
 
     @Override
     public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {

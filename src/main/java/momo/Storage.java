@@ -8,9 +8,20 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Handles persistent storage of tasks to and from the local file system.
+ * The Storage class is responsible for initializing the data file,
+ * saving tasks to disk, and loading tasks when the application starts.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Creates a new Storage instance with the given file path.
+     * Ensures that the storage file and its parent directories exist.
+     *
+     * @param filePath Path to the file used for storing tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
         intializeFile();
@@ -30,7 +41,11 @@ public class Storage {
         }
     }
 
-
+    /**
+     * Saves all tasks from the given TaskList to the storage file.
+     *
+     * @param list Task list to save.
+     */
     public void saveTasksToFile(TaskList list) {
         try (FileWriter writer = new FileWriter(filePath)) { // auto-close
             for (Task task : list.getTasks()) {
@@ -41,6 +56,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the storage file into a new TaskList.
+     * If the file cannot be read, an empty task list is returned.
+     *
+     * @return Task list containing the loaded tasks.
+     */
     public TaskList loadTasksFromFile() {
         TaskList tasklist = new TaskList(new ArrayList<>());
         try {
@@ -59,6 +80,7 @@ public class Storage {
         }
         return tasklist;
     }
+
 
     private Task fileStringToTask(String s) {
         try {
@@ -90,7 +112,14 @@ public class Storage {
         }
     }
 
-
+    /**
+     * Converts a Task object into a string representation
+     * suitable for saving to the storage file.
+     *
+     * @param task Task to convert.
+     * @return Encoded string representing the task.
+     * @throws IllegalArgumentException If the task type is unrecognized.
+     */
     public String taskToFileString(Task task) {
         String status = task.isDone() ? "1" : "0";
         if (task instanceof ToDo todo) {
