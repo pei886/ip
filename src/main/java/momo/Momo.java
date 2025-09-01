@@ -5,6 +5,11 @@ import momo.exceptions.MomoException;
 
 import java.util.Scanner;
 
+/**
+ * Entry point of the Momo application.
+ * Momo is a simple task manager that allows users to interact with their task list
+ * through text-based commands.
+ */
 public class Momo {
     protected static String greet = "Hello! I'm Momo\nWhat can I do for you?";
     protected static String bye = "Bye! See you next time!";
@@ -20,10 +25,18 @@ public class Momo {
 
     }
 
+    /**
+     * Application entry point.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         new Momo().run();
     }
 
+    /**
+     * Runs the main application loop.
+     */
     public void run() {
         ui.printGreetingMessage();
         boolean isExit = false;

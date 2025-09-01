@@ -7,8 +7,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Handles parsing of user input into executable objects.
+ * The class converts raw command strings into their corresponding command objects.
+ */
 public class Parser {
 
+    /**
+     * Parses the given user input into a Command.
+     * @param input User input string.
+     * @return Corresponding Command object.
+     * @throws MomoException If the input is invalid or incomplete.
+     */
     public static Command parseCommand(String input) throws MomoException {
         String[] parts = input.trim().split(" ", 2);
         String commandWord = parts[0];
