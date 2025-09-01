@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class FindCommand extends Command {
     private final String keyword;
+    private final String FIND_MESSAGE = "Here are the matching tasks in your list:\n\n";
 
     /**
      * Constructs a {@code FindCommand} with the specified keyword.
@@ -36,8 +37,7 @@ public class FindCommand extends Command {
         if (matchedTasks.size() == 0) {
             ui.showToUser("No tasks found containing: \"" + keyword + "\"");
         } else {
-            ui.showToUser("Here are the matching tasks in your list:");
-            ui.printList(matchedTasks);
+            ui.showToUser(FIND_MESSAGE, ui.formatTaskList(taskList));
         }
     }
 }
