@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class DueCommand extends Command {
     private final LocalDate dueDate;
+    private final String DUE_MESSAGE = "Here are your tasks in due:\n\n";
 
     /**
      * Constructs a {@code DueCommand} with the given date.
@@ -38,6 +39,6 @@ public class DueCommand extends Command {
                 }
             }
         }
-        ui.printList(dueTasks);
+        ui.showToUser(DUE_MESSAGE, ui.formatTaskList(taskList));
     }
 }

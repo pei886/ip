@@ -102,21 +102,22 @@ public class TextUi {
     }
 
     /**
-     * Prints all tasks in the given list.
+     * Returns a formatted string representing all tasks in the list,
+     * numbered starting from 1.
      *
-     * @param list Task list to display.
-     * @throws MomoException If retrieving any task fails.
+     * @param list TaskList to format.
+     * @return Formatted string of tasks.
+     * @throws MomoException if accessing a task fails.
      */
-    public void printList(TaskList list) throws MomoException {
+    public String formatTaskList(TaskList list) throws MomoException {
         StringBuilder sb = new StringBuilder();
-        sb.append("Here are the tasks in your list:\n");
         for (int i = 0; i < list.size(); i++) {
             sb.append(i + 1)
                     .append(". ")
                     .append(list.getTask(i))
                     .append("\n");
         }
-        showToUser(sb.toString().trim());
+        return sb.toString().trim();
     }
 
     private void formatOutput(String output) {
