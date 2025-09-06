@@ -25,7 +25,7 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
+    public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         TaskList matchedTasks = new TaskList(new ArrayList<>());
 
         for (Task task : taskList.getTasks()) {
@@ -35,9 +35,9 @@ public class FindCommand extends Command {
         }
 
         if (matchedTasks.size() == 0) {
-            ui.showToUser("No tasks found containing: \"" + keyword + "\"");
+            return ui.showToUser("No tasks found containing: \"" + keyword + "\"");
         } else {
-            ui.showToUser(FIND_MESSAGE, ui.formatTaskList(taskList));
+            return ui.showToUser(FIND_MESSAGE, ui.formatTaskList(taskList));
         }
     }
 }

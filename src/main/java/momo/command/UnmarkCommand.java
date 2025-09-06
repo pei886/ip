@@ -26,8 +26,8 @@ public class UnmarkCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
+    public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         Task unmarked = taskList.unmarkTask(indexToUnmark);
-        ui.showToUser(RESPONSE[0], unmarked.toString());
+        return ui.showToUser(RESPONSE[0], unmarked.toString());
     }
 }

@@ -44,12 +44,18 @@ public class TextUi {
      *
      * @param messages Messages to display.
      */
-    public void showToUser(String... messages) {
-        out.println(DIVIDER);
+    public String showToUser(String... messages) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(DIVIDER).append("\n");
+
         for (String message : messages) {
-            out.println(message.trim());
+            sb.append(message.trim()).append("\n");
         }
-        out.println(DIVIDER);
+
+        sb.append(DIVIDER);
+        String output = sb.toString();
+        out.println(output);
+        return output;
     }
 
     /**
@@ -83,9 +89,9 @@ public class TextUi {
     /**
      * Prints the goodbye message to the user.
      */
-    public void printByeMessage() {
+    public String printByeMessage() {
         String[] message = new String[] {BYE};
-        showToUser(message);
+        return showToUser(message);
     }
 
     /**
@@ -94,11 +100,11 @@ public class TextUi {
      * @param task Task that was added.
      * @param list Updated list of tasks.
      */
-    public void printAddedTask(Task task, ArrayList<Task> list) {
+    public String printAddedTask(Task task, ArrayList<Task> list) {
         String message = "Ok! I've added this task:\n"
                 + task
                 + "\nNow you have " + list.size() + " tasks in the list.";
-        showToUser(message);
+        return showToUser(message);
     }
 
     /**

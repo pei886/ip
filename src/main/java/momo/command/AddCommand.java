@@ -26,7 +26,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
+    public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         try {
             Task newTask = switch (type) {
                 case "todo" -> new ToDo(args[0]);
@@ -36,9 +36,10 @@ public class AddCommand extends Command {
             };
 
             taskList.add(newTask);
-            ui.printAddedTask(newTask, taskList.getTasks());
+
+            return ui.printAddedTask(newTask, taskList.getTasks());
         } catch (MomoException e) {
-            ui.showToUser(e.getMessage());
+            return e.getMessage();
         }
     }
 }
