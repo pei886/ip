@@ -22,7 +22,7 @@ public class Momo {
         this.ui = new TextUi();
         this.storage = new Storage(DATA_FILE);
         this.taskList = storage.loadTasksFromFile();
-
+        this.run();
     }
 
     /**
@@ -54,5 +54,12 @@ public class Momo {
             storage.saveTasksToFile(taskList);
         }
         sc.close();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Duke heard: " + input;
     }
 }
