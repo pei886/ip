@@ -46,13 +46,11 @@ public class TextUi {
      */
     public String showToUser(String... messages) {
         StringBuilder sb = new StringBuilder();
-        sb.append(DIVIDER).append("\n");
 
         for (String message : messages) {
             sb.append(message.trim()).append("\n");
         }
 
-        sb.append(DIVIDER);
         String output = sb.toString();
         out.println(output);
         return output;
@@ -64,9 +62,7 @@ public class TextUi {
      * @param message Error message to display.
      */
     public void showError(String message) {
-        out.println(DIVIDER);
         out.println(message);
-        out.println(DIVIDER);
     }
 
     /**
@@ -128,10 +124,8 @@ public class TextUi {
 
     private void formatOutput(String output) {
         String[] lines = output.split("\n");
-        out.println(DIVIDER);
         for (String line : lines) {
             out.println(line);
         }
-        out.println(DIVIDER);
     }
 }
