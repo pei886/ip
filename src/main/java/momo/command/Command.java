@@ -17,7 +17,7 @@ public abstract class Command {
      * @param taskList Task list to operate on.
      * @throws MomoException If an error occurs during execution.
      */
-    public abstract void execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException;
+    public abstract String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException;
 
     /**
      * Returns whether this command causes Momo to exit.

@@ -22,7 +22,6 @@ public class Momo {
         this.ui = new TextUi();
         this.storage = new Storage(DATA_FILE);
         this.taskList = storage.loadTasksFromFile();
-
     }
 
     /**
@@ -40,7 +39,6 @@ public class Momo {
     public void run() {
         ui.printGreetingMessage();
         boolean isExit = false;
-        Scanner sc = new Scanner(System.in);
 
         while (!isExit) {
             try {
@@ -53,6 +51,23 @@ public class Momo {
             }
             storage.saveTasksToFile(taskList);
         }
-        sc.close();
     }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        try {
+            Command command = Parser.parseCommand(input);
+
+            String response = command.execute(storage, ui, taskList);
+
+            storage.saveTasksToFile(taskList);
+
+            return response;
+        } catch (MomoException e) {
+            return e.getMessage();
+        }
+    }
+
 }

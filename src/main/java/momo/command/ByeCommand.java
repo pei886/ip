@@ -18,8 +18,8 @@ public class ByeCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage, TextUi textUi, TaskList taskList) throws MomoException {
-        textUi.printByeMessage();
+    public String execute(Storage storage, TextUi textUi, TaskList taskList) throws MomoException {
+        return textUi.printByeMessage();
     }
 
     @Override
