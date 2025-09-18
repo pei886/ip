@@ -24,6 +24,8 @@ public class Parser {
         String commandWord = parts[0];
         String rest = (parts.length > 1) ? parts[1].trim() : "";
 
+        assert !commandWord.isBlank() : "commandWord should not be blank";
+
         return switch (commandWord) {
             case "bye" -> new ByeCommand();
             case "todo" -> parseTodo(rest);

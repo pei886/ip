@@ -121,6 +121,9 @@ public class Storage {
      * @throws IllegalArgumentException If the task type is unrecognized.
      */
     public String taskToFileString(Task task) {
+
+        assert task != null : "task should not be null";
+
         String status = task.isDone() ? "1" : "0";
         if (task instanceof ToDo todo) {
             return String.format("T | %s | %s", status, todo.getDescription());
