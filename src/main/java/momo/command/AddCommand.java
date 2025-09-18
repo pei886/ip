@@ -28,18 +28,21 @@ public class AddCommand extends Command {
     @Override
     public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         try {
-            Task newTask = switch (type) {
-                case "todo" -> new ToDo(args[0]);
-                case "deadline" -> new Deadline(args[0], args[1]);
-                case "event" -> new Events(args[0], args[1], args[2]);
-                default -> throw new InvalidCommandException();
-            };
-
+            Task newTask = createTask(type);
             taskList.add(newTask);
-
             return ui.printAddedTask(newTask, taskList.getTasks());
+
         } catch (MomoException e) {
             return e.getMessage();
         }
+    }
+
+    private Task createTask(String type) throws MomoException {
+        return switch (type) {
+            case "todo" -> new ToDo(args[0]);
+            case "deadline" -> new Deadline(args[0], args[1]);
+            case "event" -> new Events(args[0], args[1], args[2]);
+            default -> throw new InvalidCommandException();
+        };
     }
 }

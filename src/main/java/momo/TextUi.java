@@ -16,7 +16,6 @@ import java.util.Scanner;
 public class TextUi {
     protected static String GREET = "Hello! I'm Momo\nWhat can I do for you?";
     protected static String BYE = "Bye! See you next time!";
-    protected static String DIVIDER = "==========================================";
 
     private final Scanner in;
     private final PrintStream out;
@@ -122,10 +121,4 @@ public class TextUi {
         return sb.toString().trim();
     }
 
-    private void formatOutput(String output) {
-        String[] lines = output.split("\n");
-        for (String line : lines) {
-            out.println(line);
-        }
-    }
 }

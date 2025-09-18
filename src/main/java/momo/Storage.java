@@ -75,42 +75,39 @@ public class Storage {
             br.close();
             return tasklist;
 
-        } catch (IOException e) {
+        } catch (IOException | MomoException e) {
             System.err.println("Error loading tasks from file: " + e.getMessage());
         }
         return tasklist;
     }
 
 
-    private Task fileStringToTask(String s) {
-        try {
-            String[] chunks = Arrays.stream(s.split("\\|"))
-                    .map(String::trim)
-                    .toArray(String[]::new);
-            Task newTask = null;
-            switch (chunks[0]) {
-                case "T":
-                    newTask = new ToDo(chunks[2]);
-                    break;
-                case "D":
-                    newTask = new Deadline(chunks[2], chunks[3]); // desc, by
-                    break;
-                case "E":
-                    String[] period = chunks[3].split("-");
-                    newTask = new Events(chunks[2], period[0], period[1]);
-                    break;
-                default:
-                    throw new MomoException("Unknown task type in storage: " + chunks[0]);
-            }
-            if (chunks[1].equals("1")) {
-                newTask.markAsDone();
-            }
-            return newTask;
-        } catch (MomoException e) {
-            System.out.println(e.getMessage());
-            return null;
+    private Task fileStringToTask(String s) throws MomoException {
+        String[] chunks = Arrays.stream(s.split("\\|"))
+                .map(String::trim)
+                .toArray(String[]::new);
+
+        Task newTask = createTaskFromChunks(chunks);
+
+        if ("1".equals(chunks[1])) {
+            newTask.markAsDone();
         }
+
+        return newTask;
     }
+
+    private Task createTaskFromChunks(String[] chunks) throws MomoException {
+        return switch (chunks[0]) {
+            case "T" -> new ToDo(chunks[2]);
+            case "D" -> new Deadline(chunks[2], chunks[3]);
+            case "E" -> {
+                String[] period = chunks[3].split("-");
+                yield new Events(chunks[2], period[0], period[1]);
+            }
+            default -> throw new MomoException("Unknown task type in storage: " + chunks[0]);
+        };
+    }
+
 
     /**
      * Converts a Task object into a string representation
@@ -132,10 +129,8 @@ public class Storage {
         } else if (task instanceof Events event) {
             return String.format("E | %s | %s | %s-%s", status, event.getDescription(), event.getFormattedStart(), event.getFormattedEnd());
         } else {
-            throw new IllegalArgumentException("Unknown task type: " + task.toString());
+            throw new IllegalArgumentException("Unknown task type: " + task);
         }
     }
-
-
 
 }
