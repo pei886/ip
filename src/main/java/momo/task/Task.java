@@ -13,6 +13,11 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    private static final DateTimeFormatter[] FORMATTERS = {
+            DateTimeFormatter.ofPattern("MMM d yyyy, HH:mm"),
+            DateTimeFormatter.ofPattern("M/d/yyyy H:mm"),
+            DateTimeFormatter.ofPattern("M/d/yyyy")
+    };
 
     /**
      * Creates a task with the specified description.
@@ -74,23 +79,21 @@ public class Task {
      * @throws DateTimeParseException If parsing fails for all supported formats.
      */
     public static LocalDateTime parseDateTimeInput(String input) throws DateTimeParseException {
-        String[] patterns = {
-                "MMM d yyyy, hh:mm",
-                "M/d/yyyy H:mm",
-                "M/d/yyyy",
-        };
+        input = input.trim();
 
-        for (String pattern : patterns) {
+        for (DateTimeFormatter formatter : FORMATTERS) {
+            // Try LocalDateTime
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-                try {
-                    return LocalDateTime.parse(input.trim(), formatter);
-                } catch (DateTimeParseException e) {
-                    LocalDate date = LocalDate.parse(input.trim(), formatter);
-                    return date.atStartOfDay();
-                }
+                return LocalDateTime.parse(input, formatter);
+            } catch (DateTimeParseException ignored) {}
+
+            // Try LocalDate
+            try {
+                LocalDate date = LocalDate.parse(input, formatter);
+                return date.atStartOfDay();
             } catch (DateTimeParseException ignored) {}
         }
+
         throw new DateTimeParseException("Invalid date format: " + input, input, 0);
     }
 

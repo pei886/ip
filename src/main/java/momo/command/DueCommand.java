@@ -30,11 +30,13 @@ public class DueCommand extends Command {
         TaskList dueTasks = new TaskList(new ArrayList<>());
         for (Task task : taskList.getTasks()) {
             if (task instanceof Deadline deadline) {
-                if (deadline.getDeadline().toLocalDate().equals(dueDate)) {
+                boolean isDue = deadline.getDeadline().toLocalDate().equals(dueDate);
+                if (isDue) {
                     dueTasks.add(deadline);
                 }
             } else if (task instanceof Events event) {
-                if (event.getStart().toLocalDate().equals(dueDate)) {
+                boolean isDue = event.getStart().toLocalDate().equals(dueDate);
+                if (isDue) {
                     dueTasks.add(event);
                 }
             }
