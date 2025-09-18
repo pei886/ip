@@ -11,8 +11,6 @@ import java.util.Scanner;
  * through text-based commands.
  */
 public class Momo {
-    protected static String greet = "Hello! I'm Momo\nWhat can I do for you?";
-    protected static String bye = "Bye! See you next time!";
     private static final String DATA_FILE = "./data/momo.txt";
     private final TextUi ui;
     private final TaskList taskList;

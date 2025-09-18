@@ -75,36 +75,39 @@ public class Storage {
             br.close();
             return tasklist;
 
-        } catch (IOException e) {
+        } catch (IOException | MomoException e) {
             System.err.println("Error loading tasks from file: " + e.getMessage());
         }
         return tasklist;
     }
 
 
-    private Task fileStringToTask(String s) {
-        try {
-            String[] chunks = Arrays.stream(s.split("\\|"))
-                    .map(String::trim)
-                    .toArray(String[]::new);
-            Task newTask = switch (chunks[0]) {
-                case "T" -> new ToDo(chunks[2]);
-                case "D" -> new Deadline(chunks[2], chunks[3]); // desc, by
-                case "E" -> {
-                    String[] period = chunks[3].split("-");
-                    yield new Events(chunks[2], period[0], period[1]);
-                }
-                default -> throw new MomoException("Unknown task type in storage: " + chunks[0]);
-            };
-            if (chunks[1].equals("1")) {
-                newTask.markAsDone();
-            }
-            return newTask;
-        } catch (MomoException e) {
-            System.out.println(e.getMessage());
-            return null;
+    private Task fileStringToTask(String s) throws MomoException {
+        String[] chunks = Arrays.stream(s.split("\\|"))
+                .map(String::trim)
+                .toArray(String[]::new);
+
+        Task newTask = createTaskFromChunks(chunks);
+
+        if ("1".equals(chunks[1])) {
+            newTask.markAsDone();
         }
+
+        return newTask;
     }
+
+    private Task createTaskFromChunks(String[] chunks) throws MomoException {
+        return switch (chunks[0]) {
+            case "T" -> new ToDo(chunks[2]);
+            case "D" -> new Deadline(chunks[2], chunks[3]);
+            case "E" -> {
+                String[] period = chunks[3].split("-");
+                yield new Events(chunks[2], period[0], period[1]);
+            }
+            default -> throw new MomoException("Unknown task type in storage: " + chunks[0]);
+        };
+    }
+
 
     /**
      * Converts a Task object into a string representation
