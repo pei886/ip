@@ -37,6 +37,7 @@ public class Parser {
             case "unmark" -> parseUnmark(rest);
             case "due" -> parseDue(rest);
             case "find" -> parseFind(rest);
+            case "sort" -> parseSort(rest);
             default -> throw new InvalidCommandException();
         };
     }
@@ -106,6 +107,16 @@ public class Parser {
             throw new MomoException("Please enter a keyword to find");
         }
         return new FindCommand(rest.trim());
+    }
+
+    private static Command parseSort(String rest) throws MomoException {
+        if (rest.isBlank() || rest.equals("asc")) {
+            return new SortCommand(true);
+        } else if (rest.equals("desc")) {
+            return new SortCommand(false);
+        } else {
+            throw new MomoException("Invalid sort keyword: " + rest + ". Try asc or desc.");
+        }
     }
 
 
