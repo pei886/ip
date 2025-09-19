@@ -25,6 +25,18 @@ public class UnmarkCommand extends Command {
         this.indexToUnmark = index;
     }
 
+    /**
+     * Executes the UnmarkCommand by marking a task in the provided {@link TaskList} as not done.
+     *
+     * <p>The task to unmark is identified by its index. After unmarking, a message is
+     * returned via the {@link TextUi} showing which task was unmarked.
+     *
+     * @param storage  The {@link Storage} instance (not used in this command).
+     * @param ui       The {@link TextUi} instance used to display the confirmation message.
+     * @param taskList The current {@link TaskList} containing the task to be unmarked.
+     * @return A formatted string confirming the task has been marked as not done.
+     * @throws MomoException If the task index is invalid or unmarking fails.
+     */
     @Override
     public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         Task unmarked = taskList.unmarkTask(indexToUnmark);

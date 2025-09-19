@@ -81,7 +81,13 @@ public class Storage {
         return tasklist;
     }
 
-
+    /**
+     * Converts a string representation of a task (as stored in the file) into a {@link Task} object.
+     *
+     * @param s The string read from storage representing a task.
+     * @return A {@link Task} object corresponding to the string.
+     * @throws MomoException If the string is invalid or contains unknown task type.
+     */
     private Task fileStringToTask(String s) throws MomoException {
         String[] chunks = Arrays.stream(s.split("\\|"))
                 .map(String::trim)
@@ -95,6 +101,14 @@ public class Storage {
 
         return newTask;
     }
+
+    /**
+     * Creates a {@link Task} object from an array of parsed string chunks.
+     *
+     * @param chunks Array of strings parsed from a storage line.
+     * @return A {@link Task} object corresponding to the parsed chunks.
+     * @throws MomoException If the task type is unknown or chunks are invalid.
+     */
 
     private Task createTaskFromChunks(String[] chunks) throws MomoException {
         return switch (chunks[0]) {

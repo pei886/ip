@@ -25,6 +25,19 @@ public class DueCommand extends Command {
         this.dueDate = dateTime;
     }
 
+    /**
+     * Executes the DueCommand by finding all tasks in the provided {@link TaskList}
+     * that are due on the specified date.
+     *
+     * <p>Only {@link Deadline} and {@link Events} tasks are checked. Tasks matching
+     * the {@code dueDate} are collected and displayed using the {@link TextUi}.
+     *
+     * @param storage  The {@link Storage} instance (not used in this command).
+     * @param ui       The {@link TextUi} instance used to display the list of due tasks.
+     * @param taskList The current {@link TaskList} to search for tasks due on the specified date.
+     * @return A formatted string listing all tasks that are due on {@code dueDate}.
+     * @throws MomoException Not thrown in this command, but part of the method signature.
+     */
     @Override
     public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         TaskList dueTasks = new TaskList(new ArrayList<>());

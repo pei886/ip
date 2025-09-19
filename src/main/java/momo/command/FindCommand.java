@@ -24,6 +24,21 @@ public class FindCommand extends Command {
         this.keyword = keyword;
     }
 
+    /**
+     * Executes the FindCommand by searching for tasks in the provided {@link TaskList}
+     * that contain the specified keyword in their description.
+     *
+     * <p>The search is case-insensitive. All tasks whose descriptions contain
+     * the {@code keyword} are collected into a new {@link TaskList} and displayed
+     * via the {@link TextUi}.
+     *
+     * @param storage  The {@link Storage} instance (not used in this command).
+     * @param ui       The {@link TextUi} instance used to display search results.
+     * @param taskList The current {@link TaskList} to search for matching tasks.
+     * @return A formatted string showing all tasks that contain the keyword,
+     *         or a message indicating no tasks matched.
+     * @throws MomoException Not thrown in this command, but part of the method signature.
+     */
     @Override
     public String execute(Storage storage, TextUi ui, TaskList taskList) throws MomoException {
         TaskList matchedTasks = new TaskList(new ArrayList<>());
