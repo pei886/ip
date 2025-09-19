@@ -41,6 +41,6 @@ public class DueCommand extends Command {
                 }
             }
         }
-        return ui.showToUser(DUE_MESSAGE, ui.formatTaskList(taskList));
+        return ui.showToUser(DUE_MESSAGE, ui.formatTaskList(dueTasks));
     }
 }
