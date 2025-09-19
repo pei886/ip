@@ -26,20 +26,20 @@ public class MainWindow extends AnchorPane {
     private Momo momo;
 
     private final Image userImage = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaUser.jpg")));
-    private final Image dukeImage = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaUser.jpg")));
+    private final Image momoImage = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaMomo.jpg")));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Momo instance */
     public void setMomo(Momo m) {
         momo = m;
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing Momo's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
@@ -48,7 +48,7 @@ public class MainWindow extends AnchorPane {
         String response = momo.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getMomoDialog(response, momoImage)
         );
         userInput.clear();
     }
