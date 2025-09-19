@@ -7,6 +7,8 @@ import momo.exceptions.InvalidCommandException;
 import momo.exceptions.MomoException;
 import momo.task.*;
 
+import java.time.format.DateTimeParseException;
+
 /**
  * Represents a command that adds a new task to the task list.
  */
@@ -38,11 +40,15 @@ public class AddCommand extends Command {
     }
 
     private Task createTask(String type) throws MomoException {
-        return switch (type) {
-            case "todo" -> new ToDo(args[0]);
-            case "deadline" -> new Deadline(args[0], args[1]);
-            case "event" -> new Events(args[0], args[1], args[2]);
-            default -> throw new InvalidCommandException();
-        };
+        try {
+            return switch (type) {
+                case "todo" -> new ToDo(args[0]);
+                case "deadline" -> new Deadline(args[0], args[1]);
+                case "event" -> new Events(args[0], args[1], args[2]);
+                default -> throw new InvalidCommandException();
+            };
+        } catch (DateTimeParseException e) {
+            throw new MomoException("Invalid date format. Please use \"MM/dd/yyyy\" format.");
+        }
     }
 }
