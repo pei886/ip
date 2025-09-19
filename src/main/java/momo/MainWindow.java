@@ -46,9 +46,10 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = momo.getResponse(input);
+        Boolean isCommand = momo.getIsCommand();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getMomoDialog(response, momoImage)
+                DialogBox.getMomoDialog(response, momoImage, isCommand)
         );
         userInput.clear();
     }

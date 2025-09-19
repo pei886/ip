@@ -15,6 +15,7 @@ public class Momo {
     private final TextUi ui;
     private final TaskList taskList;
     private final Storage storage;
+    private Boolean isCommand = true;
 
     public Momo() {
         this.ui = new TextUi();
@@ -61,11 +62,17 @@ public class Momo {
             String response = command.execute(storage, ui, taskList);
 
             storage.saveTasksToFile(taskList);
+            isCommand = true;
 
             return response;
         } catch (MomoException e) {
+            isCommand = false;
             return e.getMessage();
         }
+    }
+
+    public Boolean getIsCommand() {
+        return isCommand;
     }
 
 }

@@ -25,6 +25,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Momo");
             fxmlLoader.<MainWindow>getController().setMomo(momo);  // inject the Momo instance
             stage.show();
         } catch (IOException e) {

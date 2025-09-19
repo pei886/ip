@@ -56,9 +56,12 @@ public class DialogBox extends HBox {
         return new DialogBox(text, img);
     }
 
-    public static DialogBox getMomoDialog(String text, Image img) {
+    public static DialogBox getMomoDialog(String text, Image img, Boolean isCommand) {
         var db = new DialogBox(text, img);
         db.flip();
+        if (!isCommand) {
+            db.getStyleClass().add("error-label");
+        }
         return db;
     }
 }
